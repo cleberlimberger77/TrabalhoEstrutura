@@ -1,0 +1,76 @@
+import heapq
+import random
+
+class Paciente:
+    def __init__(self, nome, idade, gravidade):
+        self.nome = nome
+        self.idade = idade
+        self.gravidade = gravidade
+
+def atendimento_paciente(fila):
+    if fila:
+        paciente = heapq.heappop(fila)
+        print(f"Atendendo paciente: {paciente.nome}, Idade: {paciente.idade}, Gravidade: {paciente.gravidade}")
+        return paciente
+    else:
+        print("A fila de pacientes está vazia.")
+        return None
+
+def visualizar_fila(fila):
+    print("Fila de pacientes:")
+    for paciente in fila:
+        print(f"Nome: {paciente.nome}, Idade: {paciente.idade}, Gravidade: {paciente.gravidade}")
+
+def proximo_paciente(fila):
+    if fila:
+        proximo = fila[0]
+        print(f"Próximo paciente: Nome: {proximo.nome}, Idade: {proximo.idade}, Gravidade: {proximo.gravidade}")
+    else:
+        print("A fila de pacientes está vazia.")
+
+def listar_ultimos_chamados(chamados):
+    print("Últimos 5 pacientes chamados:")
+    for i, paciente in enumerate(chamados[-5:][::-1]):
+        print(f"{i + 1}. Nome: {paciente.nome}, Idade: {paciente.idade}, Gravidade: {paciente.gravidade}")
+
+def gerar_simulacao(fila, num_pacientes):
+    nomes = ["Cleber", "Bob", "Charlie", "David", "Eva", "Fay", "George", "Hannah", "Isabel", "Jack"]
+    for _ in range(num_pacientes):
+        nome = random.choice(nomes)
+        idade = random.randint(1, 100)
+        gravidade = random.randint(1, 10)
+        paciente = Paciente(nome, idade, gravidade)
+        heapq.heappush(fila, paciente)
+
+fila_de_prioridades = []
+ultimos_chamados = []
+
+while True:
+    print("\nOpções:")
+    print("1. Chegada de Pacientes (Simulação)")
+    print("2. Atendimento de Pacientes")
+    print("3. Visualização da Fila de Pacientes")
+    print("4. Mostrar o Próximo Paciente sem Chamar")
+    print("5. Listar os 5 Últimos Pacientes Chamados")
+    print("6. Sair")
+
+    opcao = input("Escolha uma opção: ")
+
+    if opcao == "1":
+        num_pacientes = int(input("Quantos pacientes deseja adicionar: "))
+        gerar_simulacao(fila_de_prioridades, num_pacientes)
+    elif opcao == "2":
+        paciente_atendido = atendimento_paciente(fila_de_prioridades)
+        if paciente_atendido:
+            ultimos_chamados.append(paciente_atendido)
+    elif opcao == "3":
+        visualizar_fila(fila_de_prioridades)
+    elif opcao == "4":
+        proximo_paciente(fila_de_prioridades)
+    elif opcao == "5":
+        listar_ultimos_chamados(ultimos_chamados)
+    elif opcao == "6":
+        print("Saindo do programa.")
+        break
+    else:
+        print("Opção inválida. Escolha novamente.")
